@@ -19,11 +19,17 @@ One terminal runs **both** API and UI (`concurrently`).
 
 ### Git branches
 
-| Branch | Contents |
-|--------|----------|
-| **`main`** | Full monorepo: `client/` + `server/` + root scripts (`npm run dev` runs both). |
-| **`frontend`** | Vue app only (`client/`). No `server/`; use a deployed API or point Vite at it. |
-| **`backend`** | Express API only (`server/`). No `client/`; `docker-compose.yml` lives on **`main`** if you need the Mongo snippet. |
+**Use `main` for normal development** (full stack in one clone). The other two branches exist so you can deploy or open **only** the client or **only** the server from a smaller tree—not because you are expected to merge them back like a feature branch.
+
+| Branch | When to use it |
+|--------|----------------|
+| **`main`** | Default. Full monorepo: `client/` + `server/`, `npm run dev` runs both, `docker-compose.yml` at repo root. |
+| **`frontend`** | Vue app only (no `server/`). Point `VITE_API_URL` at your API, or use Vite proxy to a running backend. |
+| **`backend`** | API only (no `client/`). Mongo: copy `docker-compose.yml` from `main` or set `MONGODB_URI` yourself. |
+
+#### On GitHub: “Compare & pull request” after a push
+
+If you push `frontend` or `backend`, GitHub often shows a yellow bar suggesting a PR into `main`. That is **automatic** for any non-default branch—it does **not** mean your repo is misconfigured. You can **ignore or dismiss** those prompts: `frontend` / `backend` here are **parallel slices** of the project, not unfinished work that must be merged into `main`. Open a PR only if you deliberately want to fold one branch’s history into another.
 
 ### Manual two-terminal workflow
 
