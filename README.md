@@ -17,6 +17,14 @@ npm run dev
 
 One terminal runs **both** API and UI (`concurrently`).
 
+### Git branches
+
+| Branch | Contents |
+|--------|----------|
+| **`main`** | Full monorepo: `client/` + `server/` + root scripts (`npm run dev` runs both). |
+| **`frontend`** | Vue app only (`client/`). No `server/`; use a deployed API or point Vite at it. |
+| **`backend`** | Express API only (`server/`). No `client/`; `docker-compose.yml` lives on **`main`** if you need the Mongo snippet. |
+
 ### Manual two-terminal workflow
 
 ```bash
