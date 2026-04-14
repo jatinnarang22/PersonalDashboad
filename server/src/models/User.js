@@ -23,6 +23,35 @@ const profileSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const youtubeIntegrationSchema = new mongoose.Schema(
+  {
+    refreshToken: { type: String, default: '' },
+    channelId: { type: String, default: '' },
+    channelTitle: { type: String, default: '' },
+    connectedAt: { type: Date, default: null },
+  },
+  { _id: false }
+);
+
+const instagramIntegrationSchema = new mongoose.Schema(
+  {
+    pageAccessToken: { type: String, default: '' },
+    igUserId: { type: String, default: '' },
+    username: { type: String, default: '' },
+    tokenExpiresAt: { type: Date, default: null },
+    connectedAt: { type: Date, default: null },
+  },
+  { _id: false }
+);
+
+const integrationsSchema = new mongoose.Schema(
+  {
+    youtube: { type: youtubeIntegrationSchema, default: () => ({}) },
+    instagram: { type: instagramIntegrationSchema, default: () => ({}) },
+  },
+  { _id: false }
+);
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -34,6 +63,7 @@ const userSchema = new mongoose.Schema(
     },
     passwordHash: { type: String, required: true },
     profile: { type: profileSchema, default: () => ({}) },
+    integrations: { type: integrationsSchema, default: () => ({}) },
   },
   { timestamps: true }
 );

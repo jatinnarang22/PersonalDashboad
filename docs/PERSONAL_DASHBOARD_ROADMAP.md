@@ -28,13 +28,13 @@ Use this as a north star for job-search and “whole life” tracking. Build in 
 |------|---------|
 | LinkedIn connections / messages | **No official free API** for DMs or connection counts for personal apps. Terms forbid scraping. **Manual counts** weekly or spreadsheet import. |
 | Job openings “for me” | **LinkedIn / Indeed** don’t offer nice free personal APIs — use **RSS**, **email forwarding**, or **Notion/Airtable** and sync. |
-| Instagram time | Your app already logs **minutes manually**; auto would need Meta APIs (business-heavy). |
+| Instagram time / profile | **Instagram Graph API** (implemented): Professional (Creator/Business) + Facebook Page — profile, followers, recent posts. Personal accounts are not supported by Meta’s API. Manual minutes still logged in dashboard. |
 
 ## Phase 5 — Music taste
 
 | Idea | How |
 |------|-----|
-| Listening time / genres | **Spotify Web API** (OAuth) — free tier, great for “top artists / recent tracks”. **Last.fm** scrobbling as alternative. |
+| Listening time / genres | **YouTube Data API** (implemented): Google OAuth + `youtube.readonly` — channel, liked-videos playlist sample. Private **watch history** is not exposed by Google to third-party apps. **Spotify** / **Last.fm** remain good alternatives for audio-centric stats. |
 
 ## Phase 6 — Schedule & focus
 
@@ -54,9 +54,9 @@ Use this as a north star for job-search and “whole life” tracking. Build in 
 
 ## Next implementation steps (suggested order)
 
-1. **GitHub snapshot** — `GET /api/integrations/github?user=` (server-only, no token for public data) + two usernames in profile (`githubPersonal`, `githubWork`) → dashboard cards for stars / recent activity.
-2. **Inbound webhook** — `POST /api/webhooks/daily-metrics` with a shared secret (from Shortcuts / cron) to append to today’s `DailyLog.metrics` without opening the UI.
-3. **Spotify OAuth** (optional) — redirect flow, store refresh token server-side, nightly job to pull listening minutes into `metrics.musicMinutes` if empty.
+1. **YouTube + Instagram OAuth** — `GET /api/integrations/youtube/start` / `instagram/start` (session required); tokens stored on `User.integrations`. See `server/.env.example` for `GOOGLE_*` and `META_*`.
+2. **GitHub snapshot** — public REST/GraphQL + profile usernames → dashboard cards (optional follow-up).
+3. **Inbound webhook** — `POST /api/webhooks/daily-metrics` with a shared secret (from Shortcuts / cron).
 4. **Production hardening** — `SESSION_SECRET`, `USE_MEMORY_MONGO=false`, MongoDB Atlas or Docker, HTTPS, `secure` cookies.
 
 *Extend `DailyLog.metrics` in code for new numeric fields; add UI rows as you need them.*

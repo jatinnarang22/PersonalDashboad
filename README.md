@@ -116,6 +116,15 @@ Set `VITE_API_URL` on the client if the API is not proxied (e.g. static hosting)
 | GET | `/api/goals` | Goals |
 | POST | `/api/goals` | Set goals |
 | GET | `/api/insights/today` | Today vs goals + Instagram band |
+| GET | `/api/integrations/status` | YouTube/Instagram connection flags + OAuth config (session) |
+| GET | `/api/integrations/youtube/start` | Redirect to Google OAuth (session) |
+| GET | `/api/integrations/youtube/callback` | OAuth callback — set `GOOGLE_*` in `.env` |
+| GET | `/api/integrations/youtube/summary` | Channel + liked-videos sample (session) |
+| DELETE | `/api/integrations/youtube` | Disconnect (session) |
+| GET | `/api/integrations/instagram/start` | Redirect to Meta OAuth (session) |
+| GET | `/api/integrations/instagram/callback` | OAuth callback — set `META_*` in `.env` |
+| GET | `/api/integrations/instagram/summary` | IG profile + recent media (Professional accounts; session) |
+| DELETE | `/api/integrations/instagram` | Disconnect (session) |
 
 ## Next steps
 

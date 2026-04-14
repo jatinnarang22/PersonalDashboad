@@ -5,11 +5,13 @@ import goalRoutes from './goalRoutes.js';
 import insightRoutes from './insightRoutes.js';
 import authRoutes from './authRoutes.js';
 import profileRoutes from './profileRoutes.js';
+import integrationRoutes from './integrationRoutes.js';
 
 const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/profile', profileRoutes);
+router.use('/integrations', integrationRoutes);
 router.use('/logs', logRoutes);
 router.use('/projects', projectRoutes);
 router.use('/goals', goalRoutes);
