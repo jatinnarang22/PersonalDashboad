@@ -56,6 +56,7 @@ const integrationBanner = ref(null);
 const integrationStatus = ref(null);
 const ytSummary = ref(null);
 const igSummary = ref(null);
+const igSummaryError = ref('');
 const integrationsLoading = ref(false);
 
 const goals = ref(null);
@@ -135,6 +136,37 @@ const chartWeek = computed(() => {
 });
 
 const sampleWeekBusy = ref(false);
+
+function instagramPreviewSummary(username = '') {
+  return {
+    username: username || 'your_instagram',
+    biography:
+      'Connected successfully. Live profile metrics are temporarily unavailable, so this preview helps validate the dashboard layout.',
+    followersCount: 1240,
+    mediaCount: 38,
+    recentMedia: [
+      {
+        id: 'preview-1',
+        permalink: 'https://www.instagram.com/',
+        mediaType: 'IMAGE',
+        mediaUrl:
+          'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60',
+        thumbnailUrl:
+          'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=60',
+      },
+      {
+        id: 'preview-2',
+        permalink: 'https://www.instagram.com/',
+        mediaType: 'CAROUSEL_ALBUM',
+        mediaUrl:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=60',
+        thumbnailUrl:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=60',
+      },
+    ],
+    note: 'Preview data shown. Reconnect token with instagram_basic + pages_show_list for live metrics.',
+  };
+}
 
 async function insertSampleWeek() {
   sampleWeekBusy.value = true;
@@ -358,18 +390,31 @@ async function load() {
 
 async function loadIntegrations() {
   integrationsLoading.value = true;
+  igSummaryError.value = '';
   try {
     const { data } = await integrationsApi.status();
     integrationStatus.value = data;
     ytSummary.value = null;
     igSummary.value = null;
     if (data.youtube?.connected) {
-      const s = await integrationsApi.youtubeSummary();
-      ytSummary.value = s.data.summary;
+      try {
+        const s = await integrationsApi.youtubeSummary();
+        ytSummary.value = s.data.summary;
+      } catch {
+        ytSummary.value = null;
+      }
     }
     if (data.instagram?.connected) {
-      const s = await integrationsApi.instagramSummary();
-      igSummary.value = s.data.summary;
+      try {
+        const s = await integrationsApi.instagramSummary();
+        igSummary.value = s.data.summary;
+      } catch (e) {
+        igSummaryError.value =
+          e.response?.data?.error ||
+          e.message ||
+          'Instagram is connected but the API did not return profile stats.';
+        igSummary.value = instagramPreviewSummary(data.instagram.username || '');
+      }
     }
   } catch {
     integrationStatus.value = null;
@@ -824,7 +869,11 @@ onMounted(async () => {
               </div>
 
               <p
-                v-if="integrationStatus && !integrationStatus.config?.instagramOAuth"
+                v-if="
+                  integrationStatus &&
+                  !integrationStatus.instagram?.connected &&
+                  !integrationStatus.config?.instagramOAuth
+                "
                 class="mt-3 text-xs text-amber-200/90"
               >
                 Optional: set <code class="rounded bg-amber-950/60 px-1 text-amber-100">META_APP_ID</code>,
@@ -838,6 +887,12 @@ onMounted(async () => {
                 v-else-if="integrationStatus?.instagram?.connected && igSummary"
                 class="mt-4 space-y-2 text-sm text-slate-300"
               >
+                <p
+                  v-if="igSummaryError"
+                  class="rounded-lg border border-amber-500/30 bg-amber-950/40 px-3 py-2 text-xs text-amber-100"
+                >
+                  {{ igSummaryError }}
+                </p>
                 <p>
                   <span class="text-slate-500">@</span>{{ igSummary.username || integrationStatus.instagram.username }}
                 </p>
@@ -846,28 +901,47 @@ onMounted(async () => {
                   <span class="text-slate-500">Followers:</span>
                   {{ igSummary.followersCount }}
                 </p>
+                <p v-if="igSummary.followsCount != null">
+                  <span class="text-slate-500">Following:</span>
+                  {{ igSummary.followsCount }}
+                </p>
                 <p v-if="igSummary.mediaCount != null">
                   <span class="text-slate-500">Posts:</span>
                   {{ igSummary.mediaCount }}
                 </p>
-                <ul
-                  v-if="igSummary.recentMedia?.length"
-                  class="space-y-1 text-xs"
-                >
-                  <li
-                    v-for="m in igSummary.recentMedia"
-                    :key="m.id"
-                  >
+                <div v-if="igSummary.recentMedia?.length">
+                  <span class="block text-xs font-medium text-slate-500">Recent images</span>
+                  <div class="mt-2 grid grid-cols-2 gap-2">
                     <a
-                      v-if="m.permalink"
-                      :href="m.permalink"
+                      v-for="m in igSummary.recentMedia"
+                      :key="m.id"
+                      :href="m.permalink || '#'"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-brand-gold hover:underline"
-                    >Open post</a>
-                    <span class="text-slate-500"> · {{ m.mediaType }}</span>
-                  </li>
-                </ul>
+                      class="group relative block overflow-hidden rounded-lg border border-white/10 bg-slate-900/40"
+                    >
+                      <img
+                        v-if="m.thumbnailUrl || m.mediaUrl"
+                        :src="m.thumbnailUrl || m.mediaUrl"
+                        :alt="m.caption || 'Instagram media'"
+                        class="h-28 w-full object-cover transition duration-200 group-hover:scale-[1.03]"
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                      />
+                      <div
+                        v-else
+                        class="flex h-28 items-center justify-center text-[11px] text-slate-500"
+                      >
+                        No preview
+                      </div>
+                      <div
+                        class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-2 py-1 text-[10px] text-slate-200"
+                      >
+                        {{ m.mediaType || 'MEDIA' }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
                 <p class="text-xs text-slate-500">{{ igSummary.note }}</p>
               </div>
 

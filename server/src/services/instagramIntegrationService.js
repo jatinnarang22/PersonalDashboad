@@ -163,6 +163,8 @@ export async function fetchInstagramSummary(pageAccessToken, igUserId) {
     id: m.id,
     caption: m.caption ? String(m.caption).slice(0, 280) : '',
     mediaType: m.media_type,
+    mediaUrl: m.media_url || '',
+    thumbnailUrl: m.thumbnail_url || '',
     permalink: m.permalink,
     timestamp: m.timestamp,
   }));

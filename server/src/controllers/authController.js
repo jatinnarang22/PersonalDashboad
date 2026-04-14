@@ -48,6 +48,10 @@ export async function login(req, res, next) {
     if (!ok) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
+    if (!authService.isBcryptHash(user.passwordHash)) {
+      user.passwordHash = await authService.hashPassword(password);
+      await user.save();
+    }
     req.session.userId = user._id.toString();
     await saveSession(req);
     res.json({ user: authService.userPublic(user) });
