@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import BrandLogo from '../components/BrandLogo.vue';
 import { useRouter } from 'vue-router';
 import { authApi } from '../services/api.js';
 import { refreshAuth, profileComplete } from '../authState.js';
@@ -48,71 +49,60 @@ async function submit() {
 
 <template>
   <div class="mx-auto max-w-md px-4 py-16">
-    <p class="text-sm font-medium text-sky-600">Account</p>
-    <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">
+    <BrandLogo variant="auth" />
+    <p class="mt-8 text-sm font-medium text-brand-gold">Account</p>
+    <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-100">
       Create account
     </h1>
-    <p class="mt-2 text-sm text-slate-500">
+    <p class="mt-2 text-sm text-slate-400">
       Password is hashed with bcrypt; you are logged in after sign up.
     </p>
 
     <form class="mt-8 space-y-4" @submit.prevent="submit">
       <div>
-        <label class="block text-sm font-medium text-slate-700" for="reg-email"
-          >Email</label
-        >
+        <label class="field-label" for="reg-email">Email</label>
         <input
           id="reg-email"
           v-model="email"
           type="email"
           autocomplete="email"
-          class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          class="field-control"
         />
       </div>
       <div>
-        <label class="block text-sm font-medium text-slate-700" for="reg-pass"
-          >Password</label
-        >
+        <label class="field-label" for="reg-pass">Password</label>
         <input
           id="reg-pass"
           v-model="password"
           type="password"
           autocomplete="new-password"
-          class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          class="field-control"
         />
       </div>
       <div>
-        <label
-          class="block text-sm font-medium text-slate-700"
-          for="reg-confirm"
-          >Confirm password</label
-        >
+        <label class="field-label" for="reg-confirm">Confirm password</label>
         <input
           id="reg-confirm"
           v-model="confirmPassword"
           type="password"
           autocomplete="new-password"
-          class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          class="field-control"
         />
       </div>
       <button
         type="submit"
         :disabled="submitting"
-        class="w-full rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-sky-700 disabled:opacity-60"
+        class="btn-primary w-full"
       >
         {{ submitting ? 'Sending…' : 'Register' }}
       </button>
     </form>
 
-    <p v-if="error" class="mt-4 text-sm text-red-700">{{ error }}</p>
+    <p v-if="error" class="mt-4 text-sm text-red-300">{{ error }}</p>
 
     <p class="mt-8 text-center text-sm text-slate-500">
       Already have an account?
-      <RouterLink
-        to="/login"
-        class="font-medium text-sky-600 hover:text-sky-700"
-        >Log in</RouterLink
-      >
+      <RouterLink to="/login" class="link-accent">Log in</RouterLink>
     </p>
   </div>
 </template>

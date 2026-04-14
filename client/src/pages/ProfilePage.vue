@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import BrandLogo from '../components/BrandLogo.vue';
 import { useRouter } from 'vue-router';
 import { profileApi } from '../services/api.js';
 import { emptyProfile } from '../constants/profileDefaults.js';
@@ -90,22 +91,23 @@ onMounted(load);
 
 <template>
   <div class="mx-auto max-w-3xl px-4 py-10">
-    <p class="text-sm font-medium text-sky-600">Profile</p>
-    <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">
+    <BrandLogo variant="hero" />
+    <p class="mt-8 text-sm font-medium text-brand-gold">Profile</p>
+    <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-100">
       Your details
     </h1>
-    <p class="mt-2 text-sm text-slate-500">
+    <p class="mt-2 text-sm text-slate-400">
       Saved on your user document in MongoDB. Social fields are plain URLs only (no OAuth).
       If you use
-      <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs">USE_MEMORY_MONGO=true</code>,
+      <code class="rounded bg-white/10 px-1.5 py-0.5 text-xs text-slate-300">USE_MEMORY_MONGO=true</code>,
       data is still in MongoDB but clears when the API process stops—use a real
-      <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs">MONGODB_URI</code>
+      <code class="rounded bg-white/10 px-1.5 py-0.5 text-xs text-slate-300">MONGODB_URI</code>
       to keep it after restarts.
     </p>
 
     <div
       v-if="error"
-      class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+      class="mt-6 rounded-xl border border-red-500/30 bg-red-950/50 px-4 py-3 text-sm text-red-200"
     >
       {{ error }}
     </div>
@@ -115,47 +117,47 @@ onMounted(load);
 
     <form v-else class="mt-8 space-y-10" @submit.prevent="save">
       <section>
-        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
           Basics
         </h2>
         <div class="grid gap-4 sm:grid-cols-2">
           <div class="sm:col-span-2">
-            <label class="block text-sm font-medium text-slate-700">Display name</label>
+            <label class="field-label">Display name</label>
             <input
               v-model="profile.displayName"
               type="text"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Email</label>
+            <label class="field-label">Email</label>
             <input
               v-model="profile.email"
               type="email"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Phone</label>
+            <label class="field-label">Phone</label>
             <input
               v-model="profile.phone"
               type="tel"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-sm font-medium text-slate-700">Bio</label>
+            <label class="field-label">Bio</label>
             <textarea
               v-model="profile.bio"
               rows="3"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
         </div>
       </section>
 
       <section>
-        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
           Body
         </h2>
         <p class="mb-3 text-xs text-slate-500">
@@ -163,89 +165,89 @@ onMounted(load);
         </p>
         <div class="grid gap-4 sm:grid-cols-3">
           <div>
-            <label class="block text-sm font-medium text-slate-700">Height (cm)</label>
+            <label class="field-label">Height (cm)</label>
             <input
               v-model="profile.heightCm"
               type="text"
               inputmode="decimal"
               placeholder="e.g. 175"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Weight (kg)</label>
+            <label class="field-label">Weight (kg)</label>
             <input
               v-model="profile.weightKg"
               type="text"
               inputmode="decimal"
               placeholder="e.g. 70"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Date of birth</label>
+            <label class="field-label">Date of birth</label>
             <input
               v-model="profile.dateOfBirth"
               type="date"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Gender</label>
+            <label class="field-label">Gender</label>
             <input
               v-model="profile.gender"
               type="text"
               placeholder="optional"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
         </div>
       </section>
 
       <section>
-        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
           Location & site
         </h2>
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
-            <label class="block text-sm font-medium text-slate-700">City</label>
+            <label class="field-label">City</label>
             <input
               v-model="profile.city"
               type="text"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Country</label>
+            <label class="field-label">Country</label>
             <input
               v-model="profile.country"
               type="text"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Timezone</label>
+            <label class="field-label">Timezone</label>
             <input
               v-model="profile.timezone"
               type="text"
               placeholder="e.g. America/New_York"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700">Personal website</label>
+            <label class="field-label">Personal website</label>
             <input
               v-model="profile.website"
               type="url"
               placeholder="https://"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control"
             />
           </div>
         </div>
       </section>
 
       <section>
-        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
           Social & links
         </h2>
         <p class="mb-3 text-xs text-slate-500">
@@ -254,12 +256,12 @@ onMounted(load);
         </p>
         <div class="grid gap-4 sm:grid-cols-2">
           <div v-for="pair in socialFields" :key="pair[0]">
-            <label class="block text-sm font-medium text-slate-700">{{ pair[1] }}</label>
+            <label class="field-label">{{ pair[1] }}</label>
             <input
               v-model="profile[pair[0]]"
               type="url"
               placeholder="https://"
-              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+              class="field-control text-sm"
             />
           </div>
         </div>
@@ -269,13 +271,13 @@ onMounted(load);
         <button
           type="submit"
           :disabled="saving"
-          class="rounded-lg bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow hover:bg-sky-700 disabled:opacity-60"
+          class="btn-primary rounded-lg px-5 py-2.5"
         >
           {{ saving ? 'Saving…' : 'Save profile' }}
         </button>
         <RouterLink
           to="/"
-          class="text-sm font-medium text-slate-600 hover:text-slate-900"
+          class="text-sm font-medium text-slate-400 hover:text-slate-200"
           >Back to dashboard</RouterLink
         >
       </div>

@@ -2,6 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+/**
+ * Brand hex values match tailwind.config.js theme.extend.colors.brand
+ * (avoid @apply bg-brand-* etc. — PostCSS can fail to resolve extended colors in @apply).
+ */
+@layer base {
+  body {
+    @apply min-h-screen text-slate-200 antialiased;
+    background-color: #050b1a;
+    background-image:
+      radial-gradient(ellipse 100% 70% at 50% -15%, rgba(197, 160, 89, 0.14), transparent 55%),
+      radial-gradient(ellipse 80% 50% at 100% 50%, rgba(15, 23, 41, 0.9), transparent),
+      radial-gradient(ellipse 60% 40% at 0% 80%, rgba(197, 160, 89, 0.06), transparent);
+  }
+}
+
+@layer components {
+  .field-control {
+    @apply mt-1 w-full rounded-lg border border-white/10 px-3 py-2 text-slate-100 shadow-inner placeholder:text-slate-500 focus:outline-none focus:ring-1;
+    background-color: #0a1628;
+  }
+  .field-control:focus {
+    border-color: rgba(197, 160, 89, 0.5);
+    --tw-ring-color: rgba(197, 160, 89, 0.35);
+  }
+  .field-label {
+    @apply block text-sm font-medium text-slate-400;
+  }
+  .panel {
+    @apply rounded-2xl border border-white/10 shadow-lg shadow-black/30;
+    background-color: #0f1729;
+  }
+  .btn-primary {
+    @apply rounded-lg px-4 py-2.5 text-sm font-semibold shadow transition disabled:opacity-60;
+    background-color: #c5a059;
+    color: #050b1a;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: #e4c77d;
+  }
+  .btn-secondary {
+    @apply rounded-lg border border-white/15 bg-transparent px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/5;
+  }
+  .btn-secondary:hover {
+    border-color: rgba(197, 160, 89, 0.4);
+  }
+  .link-accent {
+    @apply font-medium;
+    color: #c5a059;
+  }
+  .link-accent:hover {
+    color: #e4c77d;
+  }
 }

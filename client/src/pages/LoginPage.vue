@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import BrandLogo from '../components/BrandLogo.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { authApi } from '../services/api.js';
 import { refreshAuth, profileComplete } from '../authState.js';
@@ -47,57 +48,50 @@ async function submit() {
 
 <template>
   <div class="mx-auto max-w-md px-4 py-16">
-    <p class="text-sm font-medium text-sky-600">Account</p>
-    <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">
+    <BrandLogo variant="auth" />
+    <p class="mt-8 text-sm font-medium text-brand-gold">Account</p>
+    <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-100">
       Log in
     </h1>
-    <p class="mt-2 text-sm text-slate-500">
+    <p class="mt-2 text-sm text-slate-400">
       Session cookie (HTTP-only). Dashboard opens only when you are logged in.
     </p>
 
     <form class="mt-8 space-y-4" @submit.prevent="submit">
       <div>
-        <label class="block text-sm font-medium text-slate-700" for="email"
-          >Email</label
-        >
+        <label class="field-label" for="email">Email</label>
         <input
           id="email"
           v-model="email"
           type="email"
           autocomplete="username"
-          class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          class="field-control"
         />
       </div>
       <div>
-        <label class="block text-sm font-medium text-slate-700" for="password"
-          >Password</label
-        >
+        <label class="field-label" for="password">Password</label>
         <input
           id="password"
           v-model="password"
           type="password"
           autocomplete="current-password"
-          class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          class="field-control"
         />
       </div>
       <button
         type="submit"
         :disabled="submitting"
-        class="w-full rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-sky-700 disabled:opacity-60"
+        class="btn-primary w-full"
       >
         {{ submitting ? 'Signing in…' : 'Log in' }}
       </button>
     </form>
 
-    <p v-if="error" class="mt-4 text-sm text-red-700">{{ error }}</p>
+    <p v-if="error" class="mt-4 text-sm text-red-300">{{ error }}</p>
 
     <p class="mt-8 text-center text-sm text-slate-500">
       No account?
-      <RouterLink
-        to="/register"
-        class="font-medium text-sky-600 hover:text-sky-700"
-        >Register</RouterLink
-      >
+      <RouterLink to="/register" class="link-accent">Register</RouterLink>
     </p>
   </div>
 </template>

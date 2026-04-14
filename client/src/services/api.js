@@ -49,3 +49,25 @@ export const profileApi = {
   get: () => api.get('/profile'),
   update: (payload) => api.put('/profile', payload),
 };
+
+/** Browser must navigate here (session cookie); not axios. */
+export function integrationOAuthStartUrl(kind) {
+  const base =
+    import.meta.env.VITE_API_URL?.replace(/\/$/, '') ||
+    (typeof window !== 'undefined' ? `${window.location.origin}/api` : '/api');
+  return `${base}/integrations/${kind}/start`;
+}
+
+export const integrationsApi = {
+  status: () => api.get('/integrations/status'),
+  youtubeSummary: () => api.get('/integrations/youtube/summary'),
+  instagramSummary: () => api.get('/integrations/instagram/summary'),
+  youtubeDisconnect: () => api.delete('/integrations/youtube'),
+  instagramDisconnect: () => api.delete('/integrations/instagram'),
+  /** Page access token + Instagram User ID — saved on your user in MongoDB (same as OAuth). */
+  instagramManual: (payload) =>
+    api.post('/integrations/instagram/manual', payload),
+  /** User token with pages_show_list + instagram_basic; server resolves Page + IG account. */
+  instagramFromUserToken: (payload) =>
+    api.post('/integrations/instagram/from-user-token', payload),
+};

@@ -1,14 +1,15 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { currentUser, logoutAndClear } from './authState.js';
+import BrandLogo from './components/BrandLogo.vue';
 
 const route = useRoute();
 const router = useRouter();
 
 function linkClass(name) {
   return route.name === name
-    ? 'text-sky-700 font-medium'
-    : 'text-slate-600 hover:text-slate-900';
+    ? 'text-brand-gold font-medium'
+    : 'text-slate-400 hover:text-slate-200';
 }
 
 async function logout() {
@@ -20,14 +21,17 @@ async function logout() {
 <template>
   <div class="min-h-screen">
     <nav
-      class="sticky top-0 z-10 border-b border-slate-200/80 bg-white/90 backdrop-blur-md"
+      class="sticky top-0 z-10 border-b border-brand-gold/20 bg-brand-navy/90 backdrop-blur-md"
     >
       <div
         class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 text-sm"
       >
-        <RouterLink to="/" class="font-semibold text-slate-900"
-          >Life Dashboard</RouterLink
+        <RouterLink
+          to="/"
+          class="flex items-center gap-2 rounded-md outline-none ring-brand-gold/40 focus-visible:ring-2"
         >
+          <BrandLogo variant="nav" />
+        </RouterLink>
         <template v-if="currentUser">
           <RouterLink to="/" :class="linkClass('dashboard')">Home</RouterLink>
           <RouterLink
@@ -35,11 +39,11 @@ async function logout() {
             :class="linkClass('profile')"
             >Profile</RouterLink
           >
-          <span class="text-slate-400">|</span>
-          <span class="text-slate-600">{{ currentUser.email }}</span>
+          <span class="text-slate-600">|</span>
+          <span class="max-w-[14rem] truncate text-slate-400">{{ currentUser.email }}</span>
           <button
             type="button"
-            class="rounded-md px-2 py-1 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+            class="rounded-md px-2 py-1 text-slate-400 hover:bg-white/5 hover:text-slate-200"
             @click="logout"
           >
             Log out
