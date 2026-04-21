@@ -62,8 +62,16 @@ export const integrationsApi = {
   status: () => api.get('/integrations/status'),
   youtubeSummary: () => api.get('/integrations/youtube/summary'),
   instagramSummary: () => api.get('/integrations/instagram/summary'),
+  githubSummary: () => api.get('/integrations/github/summary'),
+  wakatimeSummary: () => api.get('/integrations/wakatime/summary'),
   youtubeDisconnect: () => api.delete('/integrations/youtube'),
   instagramDisconnect: () => api.delete('/integrations/instagram'),
+  githubDisconnect: () => api.delete('/integrations/github'),
+  wakatimeDisconnect: () => api.delete('/integrations/wakatime'),
+  githubConnect: (payload) => api.post('/integrations/github/connect', payload),
+  wakatimeConnect: (payload) => api.post('/integrations/wakatime/connect', payload),
+  trends: (platform, days = 7) =>
+    api.get(`/integrations/trends/${platform}`, { params: { days } }),
   /** Page access token + Instagram User ID — saved on your user in MongoDB (same as OAuth). */
   instagramManual: (payload) =>
     api.post('/integrations/instagram/manual', payload),

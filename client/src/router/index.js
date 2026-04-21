@@ -3,6 +3,8 @@ import DashboardPage from '../pages/DashboardPage.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import ProfilePage from '../pages/ProfilePage.vue';
+import IntegrationsPage from '../pages/IntegrationsPage.vue';
+import BlogPage from '../pages/BlogPage.vue';
 import { refreshAuth, currentUser, profileComplete } from '../authState.js';
 
 const router = createRouter({
@@ -12,6 +14,8 @@ const router = createRouter({
     { path: '/login', name: 'login', component: LoginPage, meta: { guestOnly: true } },
     { path: '/register', name: 'register', component: RegisterPage, meta: { guestOnly: true } },
     { path: '/profile', name: 'profile', component: ProfilePage, meta: { requiresAuth: true } },
+    { path: '/integrations', name: 'integrations', component: IntegrationsPage, meta: { requiresAuth: true } },
+    { path: '/blog', name: 'blog', component: BlogPage, meta: { requiresAuth: true } },
   ],
 });
 
