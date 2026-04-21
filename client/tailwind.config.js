@@ -5,6 +5,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        /** Headlines / nav — geometric, pairs with DM Sans body */
+        display: ['Outfit', 'DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         /** Matches logo: deep navy + metallic gold */
