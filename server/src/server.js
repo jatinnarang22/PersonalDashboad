@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import app from './app.js';
 import { connectDB } from './config/db.js';
 import apiRoutes from './routes/index.js';
+import { startIntegrationSyncScheduler } from './services/integrationSyncService.js';
 
 const port = Number(process.env.PORT) || 3000;
 
@@ -44,6 +45,9 @@ async function main() {
 
   app.use((err, req, res, next) => {
     console.error(err);
+    if (res.headersSent) {
+      return next(err);
+    }
     const status = err.statusCode || 500;
     res.status(status).json({
       error: err.message || 'Internal server error',
@@ -53,6 +57,7 @@ async function main() {
   app.listen(port, () => {
     console.log(`Server listening on http://localhost:${port}`);
   });
+  startIntegrationSyncScheduler();
 }
 
 main().catch((err) => {

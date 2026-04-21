@@ -22,4 +22,15 @@ router.post(
 router.get('/instagram/summary', requireAuth, integrationController.instagramSummary);
 router.delete('/instagram', requireAuth, integrationController.instagramDisconnect);
 
+router.post('/github/connect', requireAuth, integrationController.githubConnect);
+router.get('/github/start', requireAuth, integrationController.githubStart);
+router.get('/github/callback', integrationController.githubCallback);
+router.get('/github/summary', requireAuth, integrationController.githubSummary);
+router.delete('/github', requireAuth, integrationController.githubDisconnect);
+
+router.post('/wakatime/connect', requireAuth, integrationController.wakatimeConnect);
+router.get('/wakatime/summary', requireAuth, integrationController.wakatimeSummary);
+router.delete('/wakatime', requireAuth, integrationController.wakatimeDisconnect);
+router.get('/trends/:platform', requireAuth, integrationController.integrationTrends);
+
 export default router;
