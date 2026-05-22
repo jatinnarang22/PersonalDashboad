@@ -1,6 +1,6 @@
-# Local MongoDB for development — no install required if Docker is running.
+# Local MongoDB for development — optional if backend USE_MEMORY_MONGO=true.
 # Usage: docker compose up -d
-# Then: cd server && npm run dev
+# Then set USE_MEMORY_MONGO=false and MONGODB_URI in backend/.env
 
 services:
   mongo:
